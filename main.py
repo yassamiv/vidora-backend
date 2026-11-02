@@ -82,22 +82,25 @@ def info(req: VideoRequest):
     url = validate_url(req.url)
     opts = ydl_base()
     opts["skip_download"] = True
+
     try:
         with yt_dlp.YoutubeDL(opts) as ydl:
             data = ydl.extract_info(url, download=False)
+
         return {
             "title": data.get("title") or "Başlıksız video",
             "thumbnail": data.get("thumbnail") or "",
             "duration": data.get("duration"),
             "uploader": data.get("uploader") or "",
         }
-   except Exception as exc:
-    import traceback
-    traceback.print_exc()
-    raise HTTPException(
-        status_code=422,
-        detail=f"Video bilgisi alınamadı: {type(exc).__name__}: {exc}"
-    ) from exc
+
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=422,
+            detail=f"Video bilgisi alınamadı: {type(exc).__name__}: {exc}"
+        ) from exc
 
 @app.post("/api/download")
 def download(req: VideoRequest):
