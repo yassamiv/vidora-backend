@@ -67,6 +67,11 @@ def ydl_base():
         "retries": 2,
         "extractor_retries": 1,
         "ignoreerrors": False,
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["tv"]
+            }
+        },
     }
 
 @app.get("/")
