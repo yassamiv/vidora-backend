@@ -91,8 +91,13 @@ def info(req: VideoRequest):
             "duration": data.get("duration"),
             "uploader": data.get("uploader") or "",
         }
-    except Exception as exc:
-        raise HTTPException(422, "Video bilgisi alınamadı. Bağlantıyı kontrol edip tekrar dene.") from exc
+   except Exception as exc:
+    import traceback
+    traceback.print_exc()
+    raise HTTPException(
+        status_code=422,
+        detail=f"Video bilgisi alınamadı: {type(exc).__name__}: {exc}"
+    ) from exc
 
 @app.post("/api/download")
 def download(req: VideoRequest):
